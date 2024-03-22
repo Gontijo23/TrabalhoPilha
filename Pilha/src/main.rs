@@ -3,17 +3,21 @@ use std::thread;
 use std::time::Duration;
 
 struct Processos{
-    pid: u64,
-    menSize: u64,
-    timeExecution: u64,
+    pid: i32,
+    menSize: i32,
+    timeExecution: i32,
+    totalMen:i32,
+    totalTime:i32,
 }
 
 impl Processos{
-    fn new(pid: u64, menSize: u64, timeExecution: u64)-> Processos{
+    fn new(pid: i32, menSize: i32, timeExecution: i32, totalMen:i32, totalTime:i32,)-> Processos{
         Processos{
             pid,
             menSize,
             timeExecution,
+            totalMen,
+            totalTime,
         }
     }
     
@@ -36,6 +40,41 @@ impl Processos{
     }
 }
 
+struct Pilha{
+    numProcessos:i32,
+    vecProcesso: Vec<Processos>,
+    proxProcesso:i32,
+    totalMen:i32,
+    totalTime:i32,
+}
+
+impl Pilha{
+    fn new() -> Pilha{
+        Pilha{
+            vecProcesso: Vec:: new(),
+            proxProcesso: 0,
+            numProcessos: 0,
+            totalMen: 0,
+            totalTime: 0,
+        }
+    }
+
+    fn push(&mut self, menSize: i32, timeExecution: i32, totalMen:i32, totalTime: i32) {
+        let processo = Processos {
+            pid: self.proxProcesso,
+            menSize,
+            timeExecution,
+            totalMen,
+            totalTime
+        };
+        self.vecProcesso.push(processo);
+        self.proxProcesso += 1;
+        self.totalMen += menSize;
+        self.totalTime += timeExecution;
+    }
+}
+
 
 fn main(){
 }
+
